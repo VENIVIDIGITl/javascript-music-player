@@ -20,7 +20,7 @@ body {
 .player-container {
   background-color: #e7e7e7;
   width: 340px;
-  height: 520px;
+  height: 580px;
   padding: 30px;
   border-radius: 50px;
   box-shadow: 0 15px 30px 5px rgba(0, 0, 0, 0.3);
@@ -116,6 +116,108 @@ h3 {
   top: 3px;
 }
 
+/* Volume Controls */
+.volume-controls {
+  position: relative;
+  top: 50px;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0;
+}
+
+
+.fas.fa-volume-down {
+  width: 35px;
+  margin: 0 10px 0 30px;
+  cursor: default;
+}
+
+.volume-slider {
+  width: 100%;
+  height: 5px;
+  position: relative;
+  border-radius: 10px;
+  margin: 12.5px 0;
+}
+
+input[type='range'] {
+
+  background: linear-gradient(to right, #555 0%, #555 50%, #fff 50%, #fff 100%);
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  -webkit-appearance: none;
+  margin: 12.5px 0;
+  cursor: pointer;
+}
+
+/* Chrome */
+input[type='range']::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #555;
+  border: 1px solid #555;
+  border-radius: 50%;
+  margin-top: -7.5px;
+  cursor: pointer;
+}
+
+/* firefox */
+input[type='range']::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+input[type='range']::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #555;
+  border: 1px solid #555;
+  border-radius: 50%;
+  margin-top: -7.5px;
+  cursor: pointer;
+}
+
+/* ie */
+input[type='range']::-ms-track {
+  width: 100%;
+  height: 5px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+input[type='range']::-ms-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background-color: #555;
+  border: 1px solid #555;
+  border-radius: 50%;
+  margin-top: -7.5px;
+  cursor: pointer;
+}
+
+input[type='range']:focus {
+  outline: none;
+}
+
+.fas.fa-volume-up {
+  width: 35px;
+  margin: 0 20px 0 10px;
+  cursor: default;
+}
 
 /* Media Query: iPhone (vertical) */
 @media screen and (max-width: 376px) {
