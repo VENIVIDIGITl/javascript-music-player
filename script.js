@@ -10,6 +10,7 @@ const durationEl = document.getElementById('duration');
 const prevBtn = document.getElementById('prev');
 const playBtn = document.getElementById('play');
 const nextBtn = document.getElementById('next');
+const volumeSlider = document.getElementById('volume-slider');
 
 
 const songs = [
@@ -35,6 +36,7 @@ const songs = [
   }
 ];
 
+music.volume = 0.5;
 let isPlaying = false;
 
 
@@ -132,6 +134,20 @@ function setProgressBar(event) {
   music.currentTime = (clickX / width) * duration;
 };
 
+// Set Volume
+function setVolume(event) {
+  // Change Volume
+  const newVolume = event.target.value;
+  music.volume = newVolume / 100;
+  // Update Volume Progress Bar
+  volumeSlider.style.background = `
+    linear-gradient(
+      to right, #555 0%, 
+      #555 ${newVolume}%, 
+      #fff ${newVolume}%, #fff 100%
+    )`;
+}
+
 
 // Event Listeners
 prevBtn.addEventListener('click', prevSong);
@@ -139,3 +155,4 @@ nextBtn.addEventListener('click', nextSong);
 music.addEventListener('ended', nextSong);
 music.addEventListener('timeupdate', updateProgressBar);
 progressContainer.addEventListener('click', setProgressBar);
+volumeSlider.addEventListener('mousemove', setVolume);

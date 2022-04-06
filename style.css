@@ -134,16 +134,8 @@ h3 {
   cursor: default;
 }
 
-.volume-slider {
-  width: 100%;
-  height: 5px;
-  position: relative;
-  border-radius: 10px;
-  margin: 12.5px 0;
-}
 
 input[type='range'] {
-
   background: linear-gradient(to right, #555 0%, #555 50%, #fff 50%, #fff 100%);
   width: 100%;
   height: 5px;
