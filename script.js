@@ -3,8 +3,7 @@ const title = document.getElementById('title');
 const artist = document.getElementById('artist');
 const music = document.querySelector('audio');
 const progressContainer = document.getElementById('progress-container');
-const progress = document.getElementById('progress');
-const progressBall = document.getElementById('progress-ball');
+const progressSlider = document.getElementById('progress-slider');
 const currentTimeEl = document.getElementById('current-time');
 const durationEl = document.getElementById('duration');
 const prevBtn = document.getElementById('prev');
@@ -37,8 +36,9 @@ const songs = [
 ];
 
 music.volume = 0.5;
+setRangeBackground(volumeSlider, volumeSlider.value);
 let isPlaying = false;
-
+let songIndex = 0; // Current Song
 
 function playSong() {
   isPlaying = true;
@@ -69,10 +69,6 @@ function loadSong(song) {
 };
 
 
-// Current Song
-let songIndex = 0;
-
-
 function prevSong() {
   songIndex--;
   if (songIndex === 0) {
@@ -101,52 +97,123 @@ loadSong(songs[songIndex]);
 function updateProgressBar(event) {
   if (isPlaying) {
     const { duration, currentTime } = event.srcElement;
-    // Update progress bar width
+
+    // Update progress bar
     const progressPercent = (currentTime / duration) * 100;
-    progress.style.width = `${progressPercent}%`;
-    progressBall.style.left = `calc(${progressPercent}% - 2.5px)`
-    // Calculate display for duration
-    const durationMinutes = Math.floor(duration / 60);
-    let durationSeconds = Math.floor(duration % 60);
-    if (durationSeconds < 10) {
-      durationSeconds = `0${durationSeconds}`;
+    progressSlider.value = progressPercent * 5;
+    // To avoid having the background color to move out of sync with the thumb, add adjust when updating range input background
+    const adjust = progressPercent < 50 ? 0.25 : -0.25;
+    setRangeBackground(progressSlider, progressPercent + adjust);
+
+    // Calculate display for duration / remaining
+    if (durationEl.classList.contains('remaining')) {
+      const { remainingMinutes, remainingSeconds } = calculateRemaining(duration, currentTime);
+      // Delay switching duration element to avoid NaN
+      if (remainingSeconds) {
+        durationEl.textContent = `-${remainingMinutes}:${remainingSeconds}`;
+      };
+    } else {
+      const { durationMinutes, durationSeconds } = calculateDuration(duration);
+      // Delay switching duration element to avoid NaN
+      if (durationSeconds) {
+        durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+      };
     };
-    // Delay switching duration element to avoid NaN
-    if (durationSeconds) {
-      durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-    };
+
     // Calculate display for current
-    const currentMinutes = Math.floor(currentTime / 60);
-    let currentSeconds = Math.floor(currentTime % 60);
-    if (currentSeconds < 10) {
-      currentSeconds = `0${currentSeconds}`;
-    };
+    const { currentMinutes, currentSeconds } = calculateCurrentTime(currentTime);
     currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
-  }
+  };
+};
+
+
+function calculateCurrentTime(currentTime) {
+  const currentMinutes = Math.floor(currentTime / 60);
+  let currentSeconds = Math.floor(currentTime % 60);
+  if (currentSeconds < 10) {
+    currentSeconds = `0${currentSeconds}`;
+  };
+  return { currentMinutes, currentSeconds };
+};
+
+
+function calculateRemaining(duration, currentTime) {
+  const remaining = duration - currentTime;
+  const remainingMinutes = Math.floor(remaining / 60);
+  let remainingSeconds = Math.floor(remaining % 60);
+  if (remainingSeconds < 10) {
+    remainingSeconds = `0${remainingSeconds}`;
+  };
+  return { remainingMinutes, remainingSeconds };
+};
+
+
+function calculateDuration(duration) {
+  const durationMinutes = Math.floor(duration / 60);
+  let durationSeconds = Math.floor(duration % 60);
+  if (durationSeconds < 10) {
+    durationSeconds = `0${durationSeconds}`;
+  };
+  return { durationMinutes, durationSeconds };
 };
 
 
 // Set Progress Bar
 function setProgressBar(event) {
-  const width = this.clientWidth;
-  const clickX = event.offsetX;
   const { duration } = music;
-  music.currentTime = (clickX / width) * duration;
+  const newCurrentTime = duration * (event.target.value / 500);
+  const { currentMinutes, currentSeconds } = calculateCurrentTime(newCurrentTime);
+  currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
+  setRangeBackground(event.target, event.target.value / 5);
+
+  if (durationEl.classList.contains('remaining')) {
+    const { remainingMinutes, remainingSeconds } = calculateRemaining(duration, newCurrentTime);
+    // Delay switching duration element to avoid NaN
+    if (remainingSeconds) {
+      durationEl.textContent = `-${remainingMinutes}:${remainingSeconds}`
+    };
+  };
 };
 
-// Set Volume
-function setVolume(event) {
-  // Change Volume
+
+function setNewCurrentTime(event) {
+  const { duration } = music;
+  const newCurrentTime = duration * (event.target.value / 500);
+  music.currentTime = newCurrentTime;
+  setProgressBar(event);
+};
+
+
+// Set Volume & Update volume range background
+function setVolumeBar(event) {
   const newVolume = event.target.value;
   music.volume = newVolume / 100;
-  // Update Volume Progress Bar
-  volumeSlider.style.background = `
-    linear-gradient(
-      to right, #555 0%, 
-      #555 ${newVolume}%, 
-      #fff ${newVolume}%, #fff 100%
-    )`;
-}
+  setRangeBackground(volumeSlider, newVolume);
+};
+
+
+function setRangeBackground(element, progress) {
+  element.style.background = `
+  linear-gradient(
+    to right, #555 0%, 
+    #555 ${progress}%, 
+    #fff ${progress}%, #fff 100%
+  )`;
+};
+
+
+function toggleDurationRemaining() {
+  durationEl.classList.toggle('remaining');
+
+  const { duration, currentTime } = music;
+  if (durationEl.classList.contains('remaining')) {
+    const { remainingMinutes, remainingSeconds } = calculateRemaining(duration, currentTime);
+    durationEl.textContent = `-${remainingMinutes}:${remainingSeconds}`;
+  } else {
+    const { durationMinutes, durationSeconds } = calculateDuration(duration);
+    durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+  };
+};
 
 
 // Event Listeners
@@ -154,5 +221,10 @@ prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 music.addEventListener('ended', nextSong);
 music.addEventListener('timeupdate', updateProgressBar);
-progressContainer.addEventListener('click', setProgressBar);
-volumeSlider.addEventListener('mousemove', setVolume);
+durationEl.addEventListener('click', toggleDurationRemaining);
+progressSlider.addEventListener('mouseup', setNewCurrentTime);
+progressSlider.addEventListener('touchend', setNewCurrentTime);
+progressSlider.addEventListener('mousemove', setProgressBar);
+progressSlider.addEventListener('touchmove', setProgressBar);
+volumeSlider.addEventListener('mousemove', setVolumeBar);
+volumeSlider.addEventListener('touchmove', setVolumeBar);

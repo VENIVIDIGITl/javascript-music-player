@@ -20,8 +20,15 @@
 
     <!-- Progress Bar -->
     <div class="progress-container" id="progress-container">
-      <div class="progress" id="progress"></div>
-      <div class="progress-ball" id="progress-ball"></div>
+      <input 
+        type="range" 
+        class="progress-slider" 
+        id="progress-slider"
+        min="0" 
+        max="500"
+        title="Set progress"
+        value="0"
+      >
       <div class="duration-wrapper">
         <span id="current-time">0:00</span>
         <span id="duration">3:56</span>
@@ -45,7 +52,7 @@
         min="0" 
         max="100"
         title="Set volume"
-        value="50"
+        value="33"
       >
       <i class="fas fa-volume-up" id="up"></i>
     </div>
