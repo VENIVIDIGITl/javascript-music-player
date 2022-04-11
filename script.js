@@ -35,6 +35,7 @@ const songs = [
   }
 ];
 
+let lightMode = false;
 music.volume = 0.5;
 setRangeBackground(volumeSlider, volumeSlider.value);
 let isPlaying = false;
@@ -193,11 +194,19 @@ function setVolumeBar(event) {
 
 
 function setRangeBackground(element, progress) {
+  const lightSecondary = window.getComputedStyle(document.documentElement).getPropertyValue('--light-secondary');
+  const lightRangeBg = window.getComputedStyle(document.documentElement).getPropertyValue('--light-range-bg');
+  const darkSecondary = window.getComputedStyle(document.documentElement).getPropertyValue('--dark-secondary');
+  const darkRangeBg = window.getComputedStyle(document.documentElement).getPropertyValue('--dark-range-bg');
+
+  const progressBarColor = lightMode ? lightSecondary : darkSecondary;
+  const rangeBgColor = lightMode ? lightRangeBg : darkRangeBg;
+
   element.style.background = `
   linear-gradient(
-    to right, #555 0%, 
-    #555 ${progress}%, 
-    #fff ${progress}%, #fff 100%
+    to right, ${progressBarColor} 0%, 
+    ${progressBarColor} ${progress}%, 
+    ${rangeBgColor} ${progress}%, ${rangeBgColor} 100%
   )`;
 };
 

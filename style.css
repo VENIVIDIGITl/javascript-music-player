@@ -1,14 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@400;700&display=swap');
 
-/* #242323 */
+/*  */
+:root {
+  --light-bg: #c9ced3;
+  --light-player: #e7e7e7;
+  --light-primary: #242323;
+  --light-secondary: #777;
+  --light-range-bg: #fff;
+
+  --dark-bg: #353943;
+  --dark-player: #1a1a22;
+  --dark-primary: #eceef4;
+  --dark-secondary: #eceef4;
+  --dark-range-bg: #a8afb8;
+}
 
 html {
   box-sizing: border-box;
 }
 
 body {
-  background-color: #c9ced3;
+  background-color: var(--dark-bg);
   font-family: 'Spartan', sans-serif;
+  color: var(--dark-primary);
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -18,7 +32,7 @@ body {
 }
 
 .player-container {
-  background-color: #e7e7e7;
+  background-color: var(--dark-player);
   width: 340px;
   height: 580px;
   padding: 30px;
@@ -56,7 +70,7 @@ h3 {
 
 /* progress */
 .progress-container input[type='range'] {
-  background: linear-gradient(to right, #555 0%, #555 0%, #fff 0%, #fff 100%);
+  background: linear-gradient(to right, var(--dark-secondary) 0%, var(--dark-secondary) 0%, var(--dark-range-bg) 0%, var(--dark-range-bg) 100%);
   width: 100%;
   height: 5px;
   border-radius: 10px;
@@ -92,13 +106,9 @@ h3 {
 
 .fas, .fa-solid {
   font-size: 30px;
-  color: rgb(129, 129, 129);
+  color: var(--dark-secondary);
   cursor: pointer;
   user-select: none;
-}
-
-.fas.fa-play {
-  font-size: 47px;
 }
 
 .fas.fa-backward, .fas.fa-forward {
@@ -113,7 +123,7 @@ h3 {
 }
 
 .main-button {
-  font-size: 40px;
+  font-size: 47px;
   position:relative;
   top: 3px;
 }
@@ -144,7 +154,7 @@ h3 {
 
 /* Volume Controls */
 .volume-controls input[type='range'] {
-  background: linear-gradient(to right, #555 0%, #555 30%, #fff 30%, #fff 100%);
+  background: linear-gradient(to right, var(--dark-secondary) 0%, var(--dark-secondary) 30%, #fff 30%, #fff 100%);
   width: 100%;
   height: 5px;
   border-radius: 10px;
@@ -165,7 +175,7 @@ input[type='range']::-ms-track /* ie */ {
 /* Chrome */
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: #555;
+  background-color: var(--dark-secondary);
   width: 25px;
   height: 25px;
   border: none;
@@ -176,7 +186,7 @@ input[type='range']::-webkit-slider-thumb {
 
 .progress-container input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: #555;
+  background-color: var(--dark-secondary);
   width: 10px;
   height: 10px;
   border: none;
@@ -188,7 +198,7 @@ input[type='range']::-webkit-slider-thumb {
 /* firefox */ 
 input[type='range']::-moz-range-thumb {
   -webkit-appearance: none;
-  background-color: #555;
+  background-color: var(--dark-secondary);
   width: 25px;
   height: 25px;
   border: none;
@@ -199,7 +209,7 @@ input[type='range']::-moz-range-thumb {
 
 .progress-container input[type='range']::-moz-range-thumb {
   -webkit-appearance: none;
-  background-color: #555;
+  background-color: var(--dark-secondary);
   width: 10px;
   height: 10px;
   border: none;
@@ -212,7 +222,7 @@ input[type='range']::-moz-range-thumb {
  /* ie */
 input[type='range']::-ms-thumb {
   -webkit-appearance: none;
-  background-color: #555;
+  background-color: var(--dark-secondary);
   width: 25px;
   height: 25px;
   border: none;
@@ -223,7 +233,7 @@ input[type='range']::-ms-thumb {
 
 .progress-container input[type='range']::-ms-thumb {
   -webkit-appearance: none;
-  background-color: #555;
+  background-color: var(--dark-secondary);
   width: 10px;
   height: 10px;
   border: none;
