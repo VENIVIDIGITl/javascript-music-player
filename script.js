@@ -41,12 +41,13 @@ setRangeBackground(volumeSlider, volumeSlider.value);
 let isPlaying = false;
 let songIndex = 0; // Current Song
 
+
 function playSong() {
   isPlaying = true;
   playBtn.classList.replace('fa-play', 'fa-pause');
   playBtn.setAttribute('title', 'Pause');
   music.play();
-};
+}
 
 
 function pauseSong() {
@@ -54,7 +55,7 @@ function pauseSong() {
   playBtn.classList.replace('fa-pause', 'fa-play');
   playBtn.setAttribute('title', 'Play');
   music.pause();
-};
+}
 
 
 // Play or Pause Event Listener
@@ -67,27 +68,27 @@ function loadSong(song) {
   artist.textContent = song.artist;
   music.src = `audio/${song.name}.mp3`;
   image.src = `image/${song.name}.jpg`;
-};
+}
 
 
 function prevSong() {
   songIndex--;
   if (songIndex === 0) {
     songIndex = songs.length - 1
-  };
+  }
   loadSong(songs[songIndex]);
   playSong();
-};
+}
 
 
 function nextSong() {
   songIndex++;
   if (songIndex >= songs.length - 1) {
     songIndex = 0;
-  };
+  }
   loadSong(songs[songIndex]);
   playSong();
-};
+}
 
 
 // On Load - Select First Song
@@ -112,20 +113,20 @@ function updateProgressBar(event) {
       // Delay switching duration element to avoid NaN
       if (remainingSeconds) {
         durationEl.textContent = `-${remainingMinutes}:${remainingSeconds}`;
-      };
+      }
     } else {
       const { durationMinutes, durationSeconds } = calculateDuration(duration);
       // Delay switching duration element to avoid NaN
       if (durationSeconds) {
         durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-      };
-    };
+      }
+    }
 
     // Calculate display for current
     const { currentMinutes, currentSeconds } = calculateCurrentTime(currentTime);
     currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
-  };
-};
+  }
+}
 
 
 function calculateCurrentTime(currentTime) {
@@ -133,9 +134,9 @@ function calculateCurrentTime(currentTime) {
   let currentSeconds = Math.floor(currentTime % 60);
   if (currentSeconds < 10) {
     currentSeconds = `0${currentSeconds}`;
-  };
+  }
   return { currentMinutes, currentSeconds };
-};
+}
 
 
 function calculateRemaining(duration, currentTime) {
@@ -144,9 +145,9 @@ function calculateRemaining(duration, currentTime) {
   let remainingSeconds = Math.floor(remaining % 60);
   if (remainingSeconds < 10) {
     remainingSeconds = `0${remainingSeconds}`;
-  };
+  }
   return { remainingMinutes, remainingSeconds };
-};
+}
 
 
 function calculateDuration(duration) {
@@ -154,9 +155,9 @@ function calculateDuration(duration) {
   let durationSeconds = Math.floor(duration % 60);
   if (durationSeconds < 10) {
     durationSeconds = `0${durationSeconds}`;
-  };
+  }
   return { durationMinutes, durationSeconds };
-};
+}
 
 
 // Set Progress Bar
@@ -172,9 +173,9 @@ function setProgressBar(event) {
     // Delay switching duration element to avoid NaN
     if (remainingSeconds) {
       durationEl.textContent = `-${remainingMinutes}:${remainingSeconds}`
-    };
-  };
-};
+    }
+  }
+}
 
 
 function setNewCurrentTime(event) {
@@ -182,7 +183,7 @@ function setNewCurrentTime(event) {
   const newCurrentTime = duration * (event.target.value / 500);
   music.currentTime = newCurrentTime;
   setProgressBar(event);
-};
+}
 
 
 // Set Volume & Update volume range background
@@ -190,7 +191,7 @@ function setVolumeBar(event) {
   const newVolume = event.target.value;
   music.volume = newVolume / 100;
   setRangeBackground(volumeSlider, newVolume);
-};
+}
 
 
 function setRangeBackground(element, progress) {
@@ -208,7 +209,7 @@ function setRangeBackground(element, progress) {
     ${progressBarColor} ${progress}%, 
     ${rangeBgColor} ${progress}%, ${rangeBgColor} 100%
   )`;
-};
+}
 
 
 function toggleDurationRemaining() {
@@ -221,8 +222,8 @@ function toggleDurationRemaining() {
   } else {
     const { durationMinutes, durationSeconds } = calculateDuration(duration);
     durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
-  };
-};
+  }
+}
 
 
 // Event Listeners
@@ -231,9 +232,5 @@ nextBtn.addEventListener('click', nextSong);
 music.addEventListener('ended', nextSong);
 music.addEventListener('timeupdate', updateProgressBar);
 durationEl.addEventListener('click', toggleDurationRemaining);
-progressSlider.addEventListener('mouseup', setNewCurrentTime);
-progressSlider.addEventListener('touchend', setNewCurrentTime);
-progressSlider.addEventListener('mousemove', setProgressBar);
-progressSlider.addEventListener('touchmove', setProgressBar);
-volumeSlider.addEventListener('mousemove', setVolumeBar);
-volumeSlider.addEventListener('touchmove', setVolumeBar);
+progressSlider.addEventListener('input', setNewCurrentTime);
+volumeSlider.addEventListener('input', setVolumeBar);
