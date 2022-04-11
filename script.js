@@ -164,25 +164,8 @@ function calculateDuration(duration) {
 function setProgressBar(event) {
   const { duration } = music;
   const newCurrentTime = duration * (event.target.value / 500);
-  const { currentMinutes, currentSeconds } = calculateCurrentTime(newCurrentTime);
-  currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
-  setRangeBackground(event.target, event.target.value / 5);
-
-  if (durationEl.classList.contains('remaining')) {
-    const { remainingMinutes, remainingSeconds } = calculateRemaining(duration, newCurrentTime);
-    // Delay switching duration element to avoid NaN
-    if (remainingSeconds) {
-      durationEl.textContent = `-${remainingMinutes}:${remainingSeconds}`
-    }
-  }
-}
-
-
-function setNewCurrentTime(event) {
-  const { duration } = music;
-  const newCurrentTime = duration * (event.target.value / 500);
   music.currentTime = newCurrentTime;
-  setProgressBar(event);
+  setRangeBackground(event.target, event.target.value / 5);
 }
 
 
@@ -232,5 +215,5 @@ nextBtn.addEventListener('click', nextSong);
 music.addEventListener('ended', nextSong);
 music.addEventListener('timeupdate', updateProgressBar);
 durationEl.addEventListener('click', toggleDurationRemaining);
-progressSlider.addEventListener('input', setNewCurrentTime);
+progressSlider.addEventListener('input', setProgressBar);
 volumeSlider.addEventListener('input', setVolumeBar);
