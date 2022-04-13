@@ -252,6 +252,6 @@ if (currentTheme) {
 
   if (currentTheme === 'dark') {
     toggleSwitch.checked = true;
-    setMode('dark');
+    toggleMode('dark');
   }
 }
