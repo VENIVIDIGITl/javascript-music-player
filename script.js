@@ -1,3 +1,6 @@
+const toggleSwitch = document.querySelector('input[type="checkbox"]');
+const toggleIcon = document.getElementById('toggle-icon');
+const textBox = document.getElementById('text-box');
 const image = document.querySelector('img');
 const title = document.getElementById('title');
 const artist = document.getElementById('artist');
@@ -35,9 +38,9 @@ const songs = [
   }
 ];
 
-let lightMode = false;
-music.volume = 0.5;
-setRangeBackground(volumeSlider, volumeSlider.value);
+
+music.volume = 0.3;
+setRangeBackground(volumeSlider, music.volume * 100);
 let isPlaying = false;
 let songIndex = 0; // Current Song
 
@@ -178,20 +181,16 @@ function setVolumeBar(event) {
 
 
 function setRangeBackground(element, progress) {
-  const lightSecondary = window.getComputedStyle(document.documentElement).getPropertyValue('--light-secondary');
-  const lightRangeBg = window.getComputedStyle(document.documentElement).getPropertyValue('--light-range-bg');
-  const darkSecondary = window.getComputedStyle(document.documentElement).getPropertyValue('--dark-secondary');
-  const darkRangeBg = window.getComputedStyle(document.documentElement).getPropertyValue('--dark-range-bg');
-
-  const progressBarColor = lightMode ? lightSecondary : darkSecondary;
-  const rangeBgColor = lightMode ? lightRangeBg : darkRangeBg;
+  const secondary = window.getComputedStyle(document.documentElement).getPropertyValue('--secondary');
+  const rangeBg = window.getComputedStyle(document.documentElement).getPropertyValue('--range-background');
 
   element.style.background = `
-  linear-gradient(
-    to right, ${progressBarColor} 0%, 
-    ${progressBarColor} ${progress}%, 
-    ${rangeBgColor} ${progress}%, ${rangeBgColor} 100%
-  )`;
+    linear-gradient(
+      to right, ${secondary} 0%, 
+      ${secondary} ${progress}%, 
+      ${rangeBg} ${progress}%, ${rangeBg} 100%
+    )
+  `;
 }
 
 
@@ -209,7 +208,35 @@ function toggleDurationRemaining() {
 }
 
 
+// Toggle Dark / Light Mode Styles
+function toggleMode(theme) {
+  const lightMode = theme === 'light';
+  const currentIcon = lightMode ? 'fa-moon' : 'fa-sun';
+  const newIcon = lightMode ? 'fa-sun' : 'fa-moon';
+
+  toggleIcon.children[0].textContent = `${theme.replace(/^\w/, c => c.toUpperCase())} Mode`;
+  toggleIcon.children[1].classList.replace(currentIcon, newIcon);
+  setRangeBackground(progressSlider, progressSlider.value / 5);
+  setRangeBackground(volumeSlider, volumeSlider.value);
+}
+
+
+// Switch Theme Dynamically
+function switchTheme(event) {
+  if (event.target.checked) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    localStorage.setItem('theme', 'dark');
+    toggleMode('dark');
+  } else {
+    document.documentElement.setAttribute('data-theme', 'light');
+    localStorage.setItem('theme', 'light');
+    toggleMode('light');
+  }
+}
+
+
 // Event Listeners
+toggleSwitch.addEventListener('change', switchTheme);
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 music.addEventListener('ended', nextSong);
@@ -217,3 +244,14 @@ music.addEventListener('timeupdate', updateProgressBar);
 durationEl.addEventListener('click', toggleDurationRemaining);
 progressSlider.addEventListener('input', setProgressBar);
 volumeSlider.addEventListener('input', setVolumeBar);
+
+// Check Local Storage For Theme
+const currentTheme = localStorage.getItem('theme');
+if (currentTheme) {
+  document.documentElement.setAttribute('data-theme', currentTheme);
+
+  if (currentTheme === 'dark') {
+    toggleSwitch.checked = true;
+    setMode('dark');
+  }
+}

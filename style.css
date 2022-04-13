@@ -2,17 +2,19 @@
 
 /*  */
 :root {
-  --light-bg: #c9ced3;
-  --light-player: #e7e7e7;
-  --light-primary: #242323;
-  --light-secondary: #777;
-  --light-range-bg: #fff;
+  --background: #c9ced3;
+  --player-background: #e7e7e7;
+  --primary: #242323;
+  --secondary: #777;
+  --range-background: #fff;
+}
 
-  --dark-bg: #353943;
-  --dark-player: #1a1a22;
-  --dark-primary: #eceef4;
-  --dark-secondary: #eceef4;
-  --dark-range-bg: #a8afb8;
+[data-theme="dark"] {
+  --background: #353943;
+  --player-background: #1a1a22;
+  --primary: #eceef4;
+  --secondary: #eceef4;
+  --range-background: #a8afb8;
 }
 
 html {
@@ -20,24 +22,99 @@ html {
 }
 
 body {
-  background-color: var(--dark-bg);
+  background-color: var(--background);
   font-family: 'Spartan', sans-serif;
-  color: var(--dark-primary);
+  color: var(--primary);
   font-size: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   margin: 0;
+  transition: background-color 0.5s ease-in;
+}
+
+/* Dark Mode Toggle */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  position: fixed;
+  left: calc(50% - 105px);
+  top: 30px;
+}
+
+.theme-switch-wrapper span {
+  margin-right: 10px;
+  font-size: 1rem;
+}
+
+.toggle-text {
+  position: relative;
+  top: -4px;
+  right: 5px;
+  color: var(--primary);
+  transition: color 0.5s ease-in;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background: #353943;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 0.4s;
+}
+
+.slider::before {
+  background: #fff;
+  bottom: 4px;
+  content: "";
+  height: 26px;
+  left: 4px;
+  position: absolute;
+  transition: 0.4s;
+  width: 26px;
+}
+
+input:checked + .slider {
+  background-color: var(--player-background);
+  transition: background-color 0.5s ease-in;
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round::before {
+  border-radius: 50%;
 }
 
 .player-container {
-  background-color: var(--dark-player);
+  background-color: var(--player-background);
   width: 340px;
   height: 580px;
   padding: 30px;
   border-radius: 50px;
   box-shadow: 0 15px 30px 5px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.5s ease-in;
 }
 
 .img-container {
@@ -70,13 +147,14 @@ h3 {
 
 /* progress */
 .progress-container input[type='range'] {
-  background: linear-gradient(to right, var(--dark-secondary) 0%, var(--dark-secondary) 0%, var(--dark-range-bg) 0%, var(--dark-range-bg) 100%);
+  background: linear-gradient(to right, var(--secondary) 0%, var(--secondary) 0%, var(--range-background) 0%, var(--range-background) 100%);
   width: 100%;
   height: 5px;
   border-radius: 10px;
   -webkit-appearance: none;
   margin: 12.5px 0;
   cursor: pointer;
+  transition: all 0.5s ease-in;
 }
 
 .duration-wrapper {
@@ -106,9 +184,10 @@ h3 {
 
 .fas, .fa-solid {
   font-size: 30px;
-  color: var(--dark-secondary);
+  color: var(--secondary);
   cursor: pointer;
   user-select: none;
+  transition: color 0.5s ease-in;
 }
 
 .fas.fa-backward, .fas.fa-forward {
@@ -154,13 +233,14 @@ h3 {
 
 /* Volume Controls */
 .volume-controls input[type='range'] {
-  background: linear-gradient(to right, var(--dark-secondary) 0%, var(--dark-secondary) 30%, #fff 30%, #fff 100%);
+  background: linear-gradient(to right, var(--secondary) 0%, var(--secondary) 30%, var(--range-background) 30%, var(--range-background) 100%);
   width: 100%;
   height: 5px;
   border-radius: 10px;
   -webkit-appearance: none;
   margin: 12.5px 0;
   cursor: pointer;
+  transition: all 0.5s ease-in;
 }
 
 input[type='range']::-webkit-slider-runnable-track, /* Chrome */
@@ -175,7 +255,7 @@ input[type='range']::-ms-track /* ie */ {
 /* Chrome */
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: var(--dark-secondary);
+  background-color: var(--secondary);
   width: 25px;
   height: 25px;
   border: none;
@@ -186,7 +266,7 @@ input[type='range']::-webkit-slider-thumb {
 
 .progress-container input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  background-color: var(--dark-secondary);
+  background-color: var(--secondary);
   width: 10px;
   height: 10px;
   border: none;
@@ -198,7 +278,7 @@ input[type='range']::-webkit-slider-thumb {
 /* firefox */ 
 input[type='range']::-moz-range-thumb {
   -webkit-appearance: none;
-  background-color: var(--dark-secondary);
+  background-color: var(--secondary);
   width: 25px;
   height: 25px;
   border: none;
@@ -209,20 +289,19 @@ input[type='range']::-moz-range-thumb {
 
 .progress-container input[type='range']::-moz-range-thumb {
   -webkit-appearance: none;
-  background-color: var(--dark-secondary);
+  background-color: var(--secondary);
   width: 10px;
   height: 10px;
   border: none;
   border-radius: 50%;
   box-shadow: 0 2px 8px 1px rgba(0, 0, 0, 0.3);
-
   cursor: pointer;
 }
 
  /* ie */
 input[type='range']::-ms-thumb {
   -webkit-appearance: none;
-  background-color: var(--dark-secondary);
+  background-color: var(--secondary);
   width: 25px;
   height: 25px;
   border: none;
@@ -233,7 +312,7 @@ input[type='range']::-ms-thumb {
 
 .progress-container input[type='range']::-ms-thumb {
   -webkit-appearance: none;
-  background-color: var(--dark-secondary);
+  background-color: var(--secondary);
   width: 10px;
   height: 10px;
   border: none;
