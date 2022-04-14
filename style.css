@@ -6,6 +6,7 @@
   --player-background: #e7e7e7;
   --primary: #242323;
   --secondary: #777;
+  --secondary-alt: #777;
   --range-background: #fff;
 }
 
@@ -14,7 +15,9 @@
   --player-background: #1a1a22;
   --primary: #eceef4;
   --secondary: #eceef4;
-  --range-background: #a8afb8;
+  --secondary-alt: #657180;
+  --range-background: #657180;
+  
 }
 
 html {
@@ -24,7 +27,7 @@ html {
 body {
   background-color: var(--background);
   font-family: 'Spartan', sans-serif;
-  color: var(--primary);
+  color: var(--secondary-alt);
   font-size: 12px;
   display: flex;
   align-items: center;
@@ -32,6 +35,10 @@ body {
   min-height: 100vh;
   margin: 0;
   transition: background-color 0.5s ease-in;
+}
+
+h2, h3 {
+  color: var(--primary);
 }
 
 /* Dark Mode Toggle */
@@ -184,7 +191,7 @@ h3 {
 
 .fas, .fa-solid {
   font-size: 30px;
-  color: var(--secondary);
+  color: var(--secondary-alt);
   cursor: pointer;
   user-select: none;
   transition: color 0.5s ease-in;
@@ -194,6 +201,7 @@ h3 {
   font-size: 33px;
   transform: scale(1.4,1);
   margin-top: 7px;
+  color: var(--secondary);
 }
 
 .fas.fa-backward:hover,
@@ -205,6 +213,7 @@ h3 {
   font-size: 47px;
   position:relative;
   top: 3px;
+  color: var(--secondary);
 }
 
 /* Volume Controls */
